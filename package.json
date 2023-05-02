@@ -57,10 +57,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/dreamllq/vue-form-filter.git"
   },
   "keywords": [
     "vue",
-    "vue3"
+    "vue3",
+    "element-plus",
+    "filter",
+    "search",
+    "form",
+    "table"
   ]
 }
