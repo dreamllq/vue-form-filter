@@ -1,13 +1,14 @@
 {
-  "name": "vite-vue3-ts-component-template",
-  "version": "0.0.0",
+  "name": "lc-vue-form-filter",
+  "description": "table过滤表单",
+  "version": "1.0.3",
   "type": "module",
-  "main": "./dist/vite-vue3-ts-component-template.umd.cjs",
-  "module": "./dist/vite-vue3-ts-component-template.js",
+  "main": "./dist/vue-form-filter.umd.cjs",
+  "module": "./dist/vue-form-filter.js",
   "exports": {
     ".": {
-      "import": "./dist/vite-vue3-ts-component-template.js",
-      "require": "./dist/vite-vue3-ts-component-template.umd.cjs"
+      "import": "./dist/vue-form-filter.js",
+      "require": "./dist/vue-form-filter.umd.cjs"
     }
   },
   "files": [
@@ -26,6 +27,8 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
