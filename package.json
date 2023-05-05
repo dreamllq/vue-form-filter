@@ -1,7 +1,7 @@
 {
   "name": "lc-vue-form-filter",
   "description": "table过滤表单",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "type": "module",
   "main": "./dist/vue-form-filter.umd.cjs",
   "module": "./dist/vue-form-filter.js",
