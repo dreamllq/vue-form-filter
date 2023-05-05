@@ -2,10 +2,10 @@
   <div
     v-if='Array.isArray(data)'
     class='form-grid-layout'
-    :style='`width: ${grid.FORM_COLS/grid.TOTAL_COLS * 100}%;`'
+    :style='`width: calc(100% - ${btnGroupWidth}px);`'
     @keyup.enter='onEnter'>
     <template v-for='(row, index) in data'>
-      <form-grid-row v-if='!(index>=2 && expanded === false)' :key='index'>
+      <form-grid-row v-if='!(index >= minShowLineNumber && expanded === false)' :key='index'>
         <form-grid-col
           v-for='(col, i) in row'
           :key='i'
@@ -22,8 +22,7 @@
 import FormGridRow from './form-grid-row.vue';
 import FormGridCol from './form-grid-col.vue';
 import FormGridCell from './form-grid-cell.tsx';
-import { SIZE, GRID } from './constant';
-import { computed, ref, watch, onMounted, PropType } from 'vue';
+import { ref, watch, onMounted, PropType } from 'vue';
 import { Config } from './type';
 
 const props = defineProps({
@@ -35,13 +34,17 @@ const props = defineProps({
     type: Array as PropType<Config[]>,
     default: () => []
   },
-  size: {
-    type: String,
-    default: SIZE.NORMAL
-  },
   defaultExpanded: {
     type: Boolean,
     default: false
+  },
+  btnGroupWidth: {
+    type: Number,
+    default: 205
+  },
+  minShowLineNumber: {
+    type: Number,
+    default: 2
   }
 });
 
@@ -50,7 +53,6 @@ const emit = defineEmits(['enter']);
 const data = ref<Config[][]>();
 const expanded = ref(props.defaultExpanded);
 
-const grid = computed(() => GRID[props.size]);
 
 watch(() => props.configs, () => {
   makeLayoutData();

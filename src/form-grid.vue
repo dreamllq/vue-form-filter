@@ -6,17 +6,20 @@
     <div v-if='ready === true && sizeReady === true' class='form-grid--container'>
       <form-grid-layout
         ref='formGridLayoutRef'
-        :size='size'
         :configs='configs'
         :default-expanded='expanded'
-        :columns='grid.FORM_COLS/grid.FORM_ITEM_COLS' 
+        :btn-group-width='btnGroupWidthComputed'
+        :columns='columns' 
+        :min-show-line-number='minShowLineNumber'
         @enter='onSearch' />
 
       <form-grid-btn-group
+        v-if='onlyForm === false'
         ref='formGridBtnGroupRef'
         :default-expanded='expanded'
+        :btn-group-width='btnGroupWidthComputed'
         :row-number='rowNumber'
-        :size='size'
+        :min-show-line-number='minShowLineNumber'
         @expand='onExpand'
         @reset='onReset'
         @search='onSearch'>
@@ -34,13 +37,28 @@ import { findIndex, cloneDeep } from 'lodash';
 import FormGridLayout from './form-grid-layout.vue';
 import FormGridBtnGroup from './form-grid-btn-group.vue';
 import { debounce } from 'lodash';
-import { SIZE, GRID } from './constant';
 import { Config } from './type';
 
 const props = defineProps({
   model: {
     type: Object as PropType<{[index: string]: any}>,
     default: () => ({})
+  },
+  minShowLineNumber: {
+    type: Number,
+    default: 2
+  },
+  miniItemWidth: {
+    type: Number,
+    default: 300
+  },
+  btnGroupWidth: {
+    type: Number,
+    default: 205
+  },
+  onlyForm: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -53,16 +71,16 @@ const formGridBtnGroupRef = ref();
 const configs = ref<Config[]>([]);
 const ready = ref(false);
 const initValues = ref<{[index: string]: any}>({});
-const size = ref();
 const sizeReady = ref(false);
 const rowNumber = ref();
-const expanded = ref(false);
+const expanded = ref(props.onlyForm);
+const columns = ref(0);
+
+const btnGroupWidthComputed = computed(() => props.onlyForm === true ? 0 : props.btnGroupWidth);
 
 let observer:ResizeObserver;
 
-const grid = computed(() => GRID[size.value]);
-
-watch(() => size.value, async () => {
+watch(() => columns.value, async () => {
   sizeReady.value = false;
   await nextTick();
   sizeReady.value = true;
@@ -94,15 +112,13 @@ const pageResize = debounce(function() {
 
 const setSize = () => {
   const width = formGrid.value.clientWidth;
-  if (width < 1024 - 216 - 24 - 24 - 10) {
-    size.value = SIZE.MINI;
-  } else if (width < 1440 - 216 - 24 - 24 - 10) {
-    size.value = SIZE.SMALL;
-  } else if (width < 1920 - 216 - 24 - 24 - 10) {
-    size.value = SIZE.NORMAL;
-  } else {
-    size.value = SIZE.LARGE;
+
+  if (width < btnGroupWidthComputed.value) {
+    console.error('容器宽度太小');
+    return;
   }
+  const cols = Math.floor((width - btnGroupWidthComputed.value) / props.miniItemWidth);
+  columns.value = cols === 0 ? 1 : cols;
   sizeReady.value = true;
 };
 

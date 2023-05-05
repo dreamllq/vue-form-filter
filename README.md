@@ -84,6 +84,10 @@ export default {
 | 属性名 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | model | 数据模型 | \{[index: string]: any\} | {} |
+| minShowLineNumber | 最少展示行数 | number | 2 |
+| miniItemWidth | 每个单独项的宽度 | number | 300 |
+| btnGroupWidth | 右侧按钮组宽度 | number | 205 |
+| onlyForm | 是否只显示form区域 | boolean | false |
 
 
 ### FormGrid Events

@@ -1,5 +1,5 @@
 <template>
-  <div class='form-grid-btn-group' :style='`width: ${grid.BTN_GROUP_COLS/grid.TOTAL_COLS * 100}%;`'>
+  <div class='form-grid-btn-group' :style='`width: ${btnGroupWidth}px;`'>
     <div>
       <slot>
         <el-button type='primary' plain @click='onReset'>
@@ -10,7 +10,7 @@
         </el-button>
       </slot>
     </div>
-    <div v-if='rowNumber > 2'>
+    <div v-if='rowNumber > minShowLineNumber'>
       <el-button type='primary' link @click='onCollapse'>
         {{ expanded===true?'收起更多筛选器':'展开更多筛选器' }}
       </el-button>
@@ -19,17 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { SIZE, GRID } from './constant';
+import { ref } from 'vue';
 
 const props = defineProps({
   collapse: {
     type: Boolean,
     default: false
-  },
-  size: {
-    type: String,
-    default: SIZE.NORMAL
   },
   defaultExpanded: {
     type: Boolean,
@@ -38,6 +33,14 @@ const props = defineProps({
   rowNumber: {
     type: Number,
     default: 0
+  },
+  btnGroupWidth: {
+    type: Number,
+    default: 205
+  },
+  minShowLineNumber: {
+    type: Number,
+    default: 2
   }
 });
 
@@ -49,7 +52,6 @@ const emit = defineEmits([
 
 const expanded = ref(props.defaultExpanded);
 
-const grid = computed(() => GRID[props.size]);
 
 
 const onCollapse = () => {
