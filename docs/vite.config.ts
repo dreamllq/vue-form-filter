@@ -16,6 +16,7 @@ export default defineConfig({
   },
   ssr: {
     noExternal: [
+      'lc-vue-text-tip',
       'lodash',
       'vue',
       'uuid',
