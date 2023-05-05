@@ -15,7 +15,7 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'VueFormFilter',
-      fileName: 'vue-form-filter'
+      fileName: 'index'
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
@@ -25,7 +25,8 @@ export default defineConfig({
         'uuid',
         'moment',
         'rxjs',
-        '@vueuse/core'
+        '@vueuse/core',
+        'lc-vue-text-tip'
       ],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
@@ -35,7 +36,8 @@ export default defineConfig({
           lodash: '_',
           'moment': 'moment',
           'rxjs': 'rxjs',
-          '@vueuse/core': '@vueuse/core'
+          '@vueuse/core': '@vueuse/core',
+          'lc-vue-text-tip': 'lc-vue-text-tip'
         },
         exports: 'named'
       }

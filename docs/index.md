@@ -12,12 +12,12 @@ npm i lc-vue-form-filter
 <div>
   <p>{{ form }}</p>
   <form-grid :model="form" @search="onSearch">
-    <form-grid-item label="名称" prop="name">
+    <form-grid-item label="名称名称名称名称" prop="name">
       <template #default>
         <el-input  v-model="form.name"></el-input>
       </template>
     </form-grid-item>
-    <form-grid-item label="年龄" prop="age">
+    <form-grid-item label="年龄年龄年龄" prop="age">
       <template #default>
         <el-select v-model="form.age">
           <el-option label="1" value="1"></el-option>
