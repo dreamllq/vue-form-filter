@@ -2,7 +2,6 @@
   <div
     v-if='Array.isArray(data)'
     class='form-grid-layout'
-    :style='`width: calc(100% - ${btnGroupWidth}px);`'
     @keyup.enter='onEnter'>
     <template v-for='(row, index) in data'>
       <form-grid-row v-if='!(index >= minShowLineNumber && expanded === false)' :key='index'>
@@ -105,8 +104,10 @@ defineExpose({
 
 <style lang="scss" scoped>
 .form-grid-layout{
-  float: left;
-  padding: 0 12px;
-  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden;
+  // float: left;
+  // padding: 0 12px;
+  // box-sizing: border-box;
 }
 </style>

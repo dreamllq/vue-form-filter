@@ -160,13 +160,15 @@ defineExpose({
   }
 
   .form-grid--container{
-    margin: 0 -12px;
+    display: flex;
+    width: 100%;
+    // margin: 0 -12px;
 
-    &::after {
-      display: table;
-      content: "";
-      clear: both;
-    }
+    // &::after {
+    //   display: table;
+    //   content: "";
+    //   clear: both;
+    // }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class='form-grid-btn-group' :style='`width: ${btnGroupWidth}px;`'>
+  <div class='form-grid-btn-group'>
     <div>
       <slot>
         <el-button type='primary' plain @click='onReset'>
@@ -72,9 +72,11 @@ defineExpose({ expand });
 
 <style lang="scss" scoped>
 .form-grid-btn-group{
-  text-align: right;
-  float: left;
-  padding: 0 12px;
-  box-sizing: border-box;
+  flex: none;
+  padding-left: 12px;
+  // text-align: right;
+  // float: left;
+  // padding: 0 12px;
+  // box-sizing: border-box;
 }
 </style>
