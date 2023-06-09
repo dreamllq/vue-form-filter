@@ -8,16 +8,15 @@
         ref='formGridLayoutRef'
         :configs='configs'
         :default-expanded='expanded'
-        :btn-group-width='btnGroupWidthComputed'
-        :columns='columns' 
+        :mini-item-width='miniItemWidth'
         :min-show-line-number='minShowLineNumber'
+        @row-count-change='onRowCountChange'
         @enter='onSearch' />
 
       <form-grid-btn-group
         v-if='onlyForm === false'
         ref='formGridBtnGroupRef'
         :default-expanded='expanded'
-        :btn-group-width='btnGroupWidthComputed'
         :row-number='rowNumber'
         :min-show-line-number='minShowLineNumber'
         @expand='onExpand'
@@ -32,11 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted, onUnmounted, PropType } from 'vue';
+import { ref, onMounted, PropType } from 'vue';
 import { findIndex, cloneDeep } from 'lodash';
 import FormGridLayout from './form-grid-layout.vue';
 import FormGridBtnGroup from './form-grid-btn-group.vue';
-import { debounce } from 'lodash';
 import { Config } from './type';
 
 const props = defineProps({
@@ -51,10 +49,6 @@ const props = defineProps({
   miniItemWidth: {
     type: Number,
     default: 300
-  },
-  btnGroupWidth: {
-    type: Number,
-    default: 205
   },
   onlyForm: {
     type: Boolean,
@@ -74,52 +68,16 @@ const initValues = ref<{[index: string]: any}>({});
 const sizeReady = ref(false);
 const rowNumber = ref();
 const expanded = ref(props.onlyForm);
-const columns = ref(0);
-
-const btnGroupWidthComputed = computed(() => props.onlyForm === true ? 0 : props.btnGroupWidth);
-
-let observer:ResizeObserver;
-
-watch(() => columns.value, async () => {
-  sizeReady.value = false;
-  await nextTick();
-  sizeReady.value = true;
-  await nextTick();
-  rowNumber.value = formGridLayoutRef.value.getRowNumber();
-});
 
 initValues.value = cloneDeep(props.model);
 
 onMounted(() => {
-  observer = new ResizeObserver(() => {
-    pageResize();
-  });
-
-  observer.observe(formGrid.value);
-  setSize();
   ready.value = true;
-});
-
-onUnmounted(() => {
-  observer.disconnect();
-});
-
-const pageResize = debounce(function() {
-  nextTick(() => {
-    setSize();
-  });
-}, 200);
-
-const setSize = () => {
-  const width = formGrid.value.clientWidth;
-
-  if (width < btnGroupWidthComputed.value) {
-    console.error('容器宽度太小');
-    return;
-  }
-  const cols = Math.floor((width - btnGroupWidthComputed.value) / props.miniItemWidth);
-  columns.value = cols === 0 ? 1 : cols;
   sizeReady.value = true;
+});
+
+const onRowCountChange = (count: number) => {
+  rowNumber.value = count;
 };
 
 const insertConfig = (config: Config, index: number) => {
@@ -132,6 +90,7 @@ const removeConfig = (config: Config) => {
 };
 
 const onReset = () => {
+  // eslint-disable-next-line vue/no-mutating-props
   Object.keys(props.model).forEach(key => props.model[key] = initValues.value[key]);
   emit('search');
 };
@@ -162,13 +121,6 @@ defineExpose({
   .form-grid--container{
     display: flex;
     width: 100%;
-    // margin: 0 -12px;
-
-    // &::after {
-    //   display: table;
-    //   content: "";
-    //   clear: both;
-    // }
   }
 }
 

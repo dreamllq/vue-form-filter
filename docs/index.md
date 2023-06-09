@@ -31,7 +31,6 @@ npm i lc-vue-form-filter
           v-model="form.date"
           type="date"
           placeholder="Pick a day"
-          :size="size"
         />
       </template>
     </form-grid-item>
@@ -124,7 +123,6 @@ export default {
 | model | 数据模型 | \{[index: string]: any\} | {} |
 | minShowLineNumber | 最少展示行数 | number | 2 |
 | miniItemWidth | 每个单独项的宽度 | number | 300 |
-| btnGroupWidth | 右侧按钮组宽度 | number | 205 |
 | onlyForm | 是否只显示form区域 | boolean | false |
 
 

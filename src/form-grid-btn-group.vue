@@ -34,10 +34,6 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  btnGroupWidth: {
-    type: Number,
-    default: 205
-  },
   minShowLineNumber: {
     type: Number,
     default: 2
@@ -74,9 +70,5 @@ defineExpose({ expand });
 .form-grid-btn-group{
   flex: none;
   padding-left: 12px;
-  // text-align: right;
-  // float: left;
-  // padding: 0 12px;
-  // box-sizing: border-box;
 }
 </style>

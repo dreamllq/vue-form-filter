@@ -1,18 +1,20 @@
 <template>
   <div
-    v-if='Array.isArray(data)'
+    ref='layoutRef'
     class='form-grid-layout'
     @keyup.enter='onEnter'>
-    <template v-for='(row, index) in data'>
-      <form-grid-row v-if='!(index >= minShowLineNumber && expanded === false)' :key='index'>
-        <form-grid-col
-          v-for='(col, i) in row'
-          :key='i'
-          :span='col.span'
-          :columns='columns'>
-          <form-grid-cell :config='col' />
-        </form-grid-col>
-      </form-grid-row>
+    <template v-if='Array.isArray(data)'>
+      <template v-for='(row, index) in data'>
+        <form-grid-row v-if='!(index >= minShowLineNumber && expanded === false)' :key='index'>
+          <form-grid-col
+            v-for='(col, i) in row'
+            :key='i'
+            :span='col.span'
+            :columns='columns'>
+            <form-grid-cell :config='col' />
+          </form-grid-col>
+        </form-grid-row>
+      </template>
     </template>
   </div>
 </template>
@@ -21,14 +23,11 @@
 import FormGridRow from './form-grid-row.vue';
 import FormGridCol from './form-grid-col.vue';
 import FormGridCell from './form-grid-cell.tsx';
-import { ref, watch, onMounted, PropType } from 'vue';
+import { ref, watch, PropType, computed } from 'vue';
 import { Config } from './type';
+import { useElementSize } from '@vueuse/core';
 
 const props = defineProps({
-  columns: {
-    type: Number,
-    default: 3
-  },
   configs: {
     type: Array as PropType<Config[]>,
     default: () => []
@@ -37,9 +36,9 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  btnGroupWidth: {
+  miniItemWidth: {
     type: Number,
-    default: 205
+    default: 300
   },
   minShowLineNumber: {
     type: Number,
@@ -47,43 +46,39 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['enter']);
+const emit = defineEmits(['enter', 'row-count-change']);
 
-const data = ref<Config[][]>();
 const expanded = ref(props.defaultExpanded);
+const layoutRef = ref();
 
+const { width } = useElementSize(layoutRef);
 
-watch(() => props.configs, () => {
-  makeLayoutData();
-}, { deep: true });
+const columns = computed(() => Math.floor(width.value / props.miniItemWidth));
 
-onMounted(() => {
-  makeLayoutData();
-});
-
-const makeLayoutData = () => {
+const data = computed<Config[][]>(() => {
   const d = [];
-  let columns = 0;
+  let cols = 0;
   let row:Config[] = [];
   props.configs.forEach(config => {
-    if (columns + config.span > props.columns) {
+    if (cols + config.span > columns.value) {
       d.push([...row]);
       row = [];
-      columns = 0;
+      cols = 0;
     }
 
     row.push(config);
-    columns += config.span;
-    if (columns > props.columns) {
-      console.warn('布局显示超出');
-    }
+    cols += config.span;
   });
 
   if (row.length > 0) {
     d.push([...row]);
   }
-  data.value = d;
-};
+  return d;
+});
+
+watch(() => data.value.length, () => {
+  emit('row-count-change', data.value.length);
+});
 
 const expand = (e: boolean) => {
   expanded.value = e;
@@ -106,8 +101,5 @@ defineExpose({
 .form-grid-layout{
   flex: 1;
   overflow: hidden;
-  // float: left;
-  // padding: 0 12px;
-  // box-sizing: border-box;
 }
 </style>
