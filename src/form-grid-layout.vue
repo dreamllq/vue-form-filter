@@ -11,7 +11,7 @@
             :key='i'
             :span='col.span'
             :columns='columns'>
-            <form-grid-cell :config='col' />
+            <form-grid-cell :config='col' :label-width='labelWidth' :label-position='labelPosition' />
           </form-grid-col>
         </form-grid-row>
       </template>
@@ -39,6 +39,14 @@ const props = defineProps({
   miniItemWidth: {
     type: Number,
     default: 300
+  },
+  labelWidth: {
+    type: Number,
+    default: 85
+  },
+  labelPosition: {
+    type: String as PropType<'left' | 'top'>,
+    default: 'left'
   },
   minShowLineNumber: {
     type: Number,

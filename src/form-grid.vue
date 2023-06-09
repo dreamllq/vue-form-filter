@@ -10,6 +10,8 @@
         :default-expanded='expanded'
         :mini-item-width='miniItemWidth'
         :min-show-line-number='minShowLineNumber'
+        :label-width='labelWidth'
+        :label-position='labelPosition'
         @row-count-change='onRowCountChange'
         @enter='onSearch' />
 
@@ -49,6 +51,14 @@ const props = defineProps({
   miniItemWidth: {
     type: Number,
     default: 300
+  },
+  labelWidth: {
+    type: Number,
+    default: 85
+  },
+  labelPosition: {
+    type: String as PropType<'left' | 'top'>,
+    default: 'left'
   },
   onlyForm: {
     type: Boolean,
@@ -135,12 +145,12 @@ defineExpose({
   }
 }
 .form-grid-cell{
-  display: flex;
-  
-  
-  .form-grid-cell--component{
-    flex: 1;
-    overflow: hidden;
+  &.label-left{
+    display: flex;
+    .form-grid-cell--component{
+      flex: 1;
+      overflow: hidden;
+    }
   }
 }
 </style>

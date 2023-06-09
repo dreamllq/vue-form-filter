@@ -86,6 +86,8 @@ export default {
 | model | 数据模型 | \{[index: string]: any\} | {} |
 | minShowLineNumber | 最少展示行数 | number | 2 |
 | miniItemWidth | 每个单独项的宽度 | number | 300 |
+| labelWidth | label宽度 | number | 86 |
+| labelPosition | label位置 | top \| left | left |
 | onlyForm | 是否只显示form区域 | boolean | false |
 
 
