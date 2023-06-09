@@ -3,7 +3,7 @@
     <div ref='hiddenItems' class='hidden'>
       <slot /> 
     </div>
-    <div v-if='ready === true && sizeReady === true' class='form-grid--container'>
+    <div class='form-grid--container'>
       <form-grid-layout
         ref='formGridLayoutRef'
         :configs='configs'
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, PropType } from 'vue';
+import { ref, PropType } from 'vue';
 import { findIndex, cloneDeep } from 'lodash';
 import FormGridLayout from './form-grid-layout.vue';
 import FormGridBtnGroup from './form-grid-btn-group.vue';
@@ -63,18 +63,11 @@ const formGridLayoutRef = ref();
 const formGridBtnGroupRef = ref();
 
 const configs = ref<Config[]>([]);
-const ready = ref(false);
 const initValues = ref<{[index: string]: any}>({});
-const sizeReady = ref(false);
 const rowNumber = ref();
 const expanded = ref(props.onlyForm);
 
 initValues.value = cloneDeep(props.model);
-
-onMounted(() => {
-  ready.value = true;
-  sizeReady.value = true;
-});
 
 const onRowCountChange = (count: number) => {
   rowNumber.value = count;

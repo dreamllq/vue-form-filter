@@ -84,16 +84,11 @@ const expand = (e: boolean) => {
   expanded.value = e;
 };
 
-const getRowNumber = () => data.value!.length;
-
 const onEnter = () => {
   emit('enter');
 };
 
-defineExpose({
-  expand,
-  getRowNumber
-});
+defineExpose({ expand });
 
 </script>
 
