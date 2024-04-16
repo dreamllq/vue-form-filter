@@ -23,7 +23,7 @@ const props = defineProps({
   }
 });
 
-const style = computed(() => (props.labelPosition === 'left' ? {
+const style: any = computed(() => (props.labelPosition === 'left' ? {
   width: `${props.labelWidth}px`,
   marginRight: '16px',
   textAlign: 'right'
